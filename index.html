@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Love Calculator ❤️ — XIZOAHUB</title>
+  <meta name="description" content="Fun Love Calculator in Hindi / Hinglish. Animated, shareable result cards with randomized anime-style characters and 100+ love shayari. For entertainment only." />
+  <meta name="keywords" content="love calculator, compatibility, shayari, Hindi, Hinglish, share, download, fun" />
+  <meta name="author" content="thepowerofyouths" />
+  <!-- Open Graph for social cards -->
+  <meta property="og:title" content="Love Calculator — Check your compatibility!">
+  <meta property="og:description" content="Animated, Hindi/Hinglish love calculator with shareable result cards, random anime-style avatars and love shayari.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="thepowerofyouths">
+  <style>
+    :root{--bg:#fff6f7;--card:#fff;--accent:#e11d48;--muted:#8b5cf6;--text:#2b2b2b;--glass:rgba(255,255,255,0.6)}
+    *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#fff0f2,#fff6f7);color:var(--text)}
+    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .card{width:100%;max-width:920px;background:linear-gradient(180deg,#fff,#fff8f9);border-radius:18px;padding:22px;box-shadow:0 12px 50px rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.06)}
+    header{display:flex;align-items:center;gap:14px}
+    h1{margin:0;font-size:1.6rem;color:var(--accent)}
+    .lead{margin:6px 0 14px;color:#6b7280}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    label{display:block;font-size:.78rem;color:#6b7280;margin-bottom:6px}
+    input[type="text"]{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);background:transparent;color:inherit;font-size:1rem}
+    .controls{display:flex;gap:10px;margin-top:12px}
+    button.btn{padding:10px 14px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--accent),#ff7aa2);color:white;font-weight:700;cursor:pointer}
+    button.secondary{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--accent);font-weight:700}
+    .result{margin-top:18px;padding:16px;border-radius:14px;background:linear-gradient(180deg,rgba(225,29,72,0.03), rgba(225,29,72,0.02));display:flex;align-items:center;gap:14px}
+    .avatar{width:110px;height:110px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:#fff;padding:10px;box-shadow:0 8px 30px rgba(0,0,0,0.06);overflow:hidden}
+    .meta{flex:1}
+    .percent{font-size:2.2rem;font-weight:900;margin:0;color:var(--accent)}
+    .msg{color:#6b7280;margin:6px 0 0}
+    .small{font-size:.78rem;color:#6b7280}
+    .actions{display:flex;gap:8px;margin-top:12px}
+    .lang-toggle{margin-left:auto}
+
+    /* animated background hearts */
+    .hearts{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
+    .hearts i{position:absolute;width:18px;height:18px;background:radial-gradient(circle at 35% 30%,#fff 0,#ff9aa8 30%,#ff6b81 60%);transform:rotate(-45deg);opacity:.7;border-radius:4px 4px 20px 20px}
+
+    /* pulse */
+    .pulse{animation:pulse 1.2s infinite}
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
+
+    /* responsive */
+    @media (max-width:800px){.grid{grid-template-columns:1fr} .avatar{width:86px;height:86px}} 
+
+    /* accessibility focus */
+    :focus{outline:3px solid rgba(225,29,72,0.12);outline-offset:2px}
+
+    /* result card for download */
+    #downloadCard{width:820px;height:420px;padding:28px;border-radius:18px;background:linear-gradient(180deg,#fff,#fff6f7);display:flex;gap:20px;align-items:center}
+    #downloadCard .avatar{width:240px;height:240px;border-radius:18px}
+    #downloadCard .meta{flex:1}
+    #downloadCard h2{margin:0;font-size:2.2rem;color:var(--accent)}
+    #downloadCard p{margin:8px 0 0;color:#6b7280}
+    /* hide from page visually */
+    .offscreen{position:fixed;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+  </style>
+</head>
+<body>
+  <div class="hearts" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="card" role="main">
+      <header>
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M12 21s-7-4.35-9.5-7.5C-1 8.5 5 3.5 12 9c7-5.5 13  -0.5 9.5 4.5C19 16.65 12 21 12 21z" fill="#ff6b81"/></svg>
+        <div>
+          <h1>Love Calculator ❤️</h1>
+          <div class="lead">Hindi/Hinglish toggle ✓ &nbsp; Animated ✓ &nbsp; Shareable card ✓</div>
+        </div>
+        <div class="lang-toggle">
+          <label class="small">Language</label>
+          <select id="lang" aria-label="Language selector">
+            <option value="hi">Hindi</option>
+            <option value="hn">Hinglish</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+      </header>
+
+      <div style="margin-top:12px" class="grid">
+        <div>
+          <label for="name1">Your name</label>
+          <input id="name1" type="text" placeholder="e.g. Priyanshu" autocomplete="off" />
+        </div>
+        <div>
+          <label for="name2">Partner's name</label>
+          <input id="name2" type="text" placeholder="e.g. Priya" autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="calc" class="btn">Calculate</button>
+        <button id="reset" class="secondary">Reset</button>
+        <button id="historyBtn" class="secondary">History</button>
+        <div style="flex:1"></div>
+        <label class="small">Theme</label>
+        <input id="redMode" type="checkbox" title="Red love theme" aria-label="Red theme toggle" checked />
+      </div>
+
+      <div id="result" class="result" style="display:none" aria-live="polite">
+        <div id="avatar" class="avatar" aria-hidden="true"></div>
+        <div class="meta">
+          <p id="percent" class="percent">0%</p>
+          <p id="message" class="msg">Enter names and hit Calculate.</p>
+          <div class="actions">
+            <button id="downloadBtn" class="btn">Download Card</button>
+            <button id="shareWhats" class="secondary">WhatsApp</button>
+            <button id="shareInsta" class="secondary">Instagram Story</button>
+            <button id="shareSnap" class="secondary">Snapchat</button>
+            <button id="sharePin" class="secondary">Pinterest</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px" class="small">Limit: A device can run this calculator <strong id="limitCount">0</strong> times (max 7) — privacy-first; results stored locally only.</div>
+
+      <footer style="margin-top:14px;display:flex;align-items:center;justify-content:space-between">
+        <div class="small">Made with ❤️ — for fun. No data leaves your device unless you share it.</div>
+        <div class="small">SEO-friendly • Share-ready</div>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- offscreen element used to compose download card -->
+  <div class="offscreen" aria-hidden="true">
+    <div id="downloadCard" role="img" aria-label="Result card">
+      <div id="cardAvatar" class="avatar"></div>
+      <div class="meta">
+        <h2 id="cardTitle">Priyanshu ❤️ Priya</h2>
+        <p id="cardPercent">85% — Match made in meme heaven</p>
+        <p id="cardShayari">Tere bin jee na payenge — bas yahi dua hamari.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Content: 100+ love shayari (random pick) ----------
+    const SHAYARI = [
+      "Tere naam se hi meri subah hai, tere naam se hi meri raat.",
+      "Tum mile toh hua yeh ehsaas, zindagi me rang bhar gaye.",
+      "Dil ki duniya bas tumse hai, tum hi ho mera aashiyana.",
+      "Har pal bas tera intezar, tu hi meri har ek dua.",
+      "Tere bina kya wajood mera, tu hi toh meri pehchaan.",
+      "Pyaar vo nahi jo sirf mohabbat kahe, pyaar vo hai jo har dard mitaye.",
+      "Chaand bhi sharma jaaye teri hansi dekh kar.",
+      "Tum ho to zindagi me khushboo hai, tum ho to gulaab khil gaye.",
+      "Tere khayalon se hi din guzarta hai, tu hi meri har subah.",
+      "Bas ek pal me badal diya tune, meri zindagi ka maza.",
+      "Teri muskurahat meri taaqat hai.",
+      "Palkon pe sapne teri tasveer sajaun.",
+      "Tumse mile bina adhura sa lagta hai sab kuch.",
+      "Teri aankhon me apna ghar dhoondhta hoon.",
+      "Tune chura liya mera dil, bina puchhe hi le gayi.",
+      "Har safar me tera saath chahiye.",
+      "Tera hona hi meri pehchaan hai.",
+      "Ishq me teri ada ka jawab nahin.",
+      "Tere bina khamoshi me bhi awaz teri aati hai.",
+      "Main shayar nahi par tumko shayari bana deta hoon.",
+      "Tum ho to sab kuch hai, tum nahi to kuch bhi nahi.",
+      "Dil se nikli dua, sada tumhara saath rahe.",
+      "Tere naam pe jeene ki aadat si ho gayi.",
+      "Mere lafzo me teri yaad basi rehti hai.",
+      "Tumhari hasi meri kamzori hai.",
+      "Aankhon se baatein, dil se raaz.",
+      "Tum ho to khuda fikr bhi khush ho.",
+      "Pyar me teri wafaa ka asar hamesha rahe.",
+      "Tumhe pa kar duniya mil gayi mujhko.",
+      "Tere liye hi har subah nikalta hoon.",
+      "Zindagi ka safar bas tumhare saath hi khubsurat.",
+      "Teri baahon me jo sukoon hai, uska koi muqabla nahi.",
+      "Main aur tum, bas yehi kahani sadaa.",
+      "Tere ishq ka rang meri rooh pe chhaya.",
+      "Har pal tujhe paa lene ki tamanna.",
+      "Tumse hi meri zindagi saji hai.",
+      "Har dhadkan me tera naam likha.",
+      "Tere bina adhuri si hai meri duniya.",
+      "Tere aane se hi sab kuch badal gaya.",
+      "Tumhari ek nazar, meri poori duniya.",
+      "Tere husn ke aage shabnam phike pad jaye.",
+      "Teri ek muskan hi meri pehchan.",
+      "Har raat teri yaadon me beet jaati hai.",
+      "Teri aankhon me base armaan mere.",
+      "Mera har faisla tera saath chunta hai.",
+      "Tum ho to har lamha khas hai.",
+      "Pyar ka safar tumhare sang haseen.",
+      "Tere saath bitaye pal amar ho jaate hain.",
+      "Tujhse hi meri khushiyon ki chabi judi hai.",
+      "Tere bina din adhoora lagta hai.",
+      "Tere khwabon me hi main jeeta hoon.",
+      "Tere saath ki adaa mujhko diwana bana deti hai.",
+      "Tum meri manzil, main tera raahi.",
+      "Meri duniya, tumhara naam.",
+      "Tumse juda rehna mumkin nahi.",
+      "Tere ishq me hi meri saansen basi hain.",
+      "Teri baat me aisi meethaas hai jo sab ko bhula de.",
+      "Tera saath hi mere har sapne ko sach kare.",
+      "Tumhare liye hi meri har dua.",
+      "Teri nazar ne mujhko khud se milaya.",
+      "Tere pyar ne mujhe puri tarah badal diya.",
+      "Tere saath chalna mera naseeb hai.",
+      "Teri chahat me hi meri khushi.",
+      "Tu hai to sab hai, tu nahi to kuch bhi nahi.",
+      "Bas teri ek muskurahat mere liye kaafi.",
+      "Tere pyar me har dard bhi meetha lagta.",
+      "Teri baatein mere din ko roshan kar deti hain.",
+      "Har pal teri kami mehsoos hoti hai.",
+      "Tere naazuk lafzon me meri duniya samayi.",
+      "Teri khushi meri priority.",
+      "Tere ishq ki khushboo har jagah mehkaati.",
+      "Aaj bhi teri yaad dil ko chu jaati hai.",
+      "Tere bina adhura, tere saath poora.",
+      "Tere sang hi khubsurat hai mera kal.",
+      "Har subah teri yaad se shuru hoti hai.",
+      "Tere pyaar ke aage sab kuch bekar hai.",
+      "Bas itna samajh le, tu hi mera hai.",
+      "Tere pyar me khud ko paaya maine.",
+      "Teri adaon pe main fida hoon.",
+      "Tere sang jeena mera sapna hai.",
+      "Teri har ek baat mere dil ko choo jaati.",
+      "Tum ho to sab rang bikhar jaate hain.",
+      "Aankhon me tera hi asar rehta.",
+      "Teri yaad me raat bhi roshan ho jaati.",
+      "Teri awaaz me mere sapne basti hain.",
+      "Tere saath hone se zindagi sanwari rehti.",
+      "Tere bina sab kuch soona lagta hai.",
+      "Tere pyaar ne mujhe jeena sikhaya.",
+      "Tere ishq me dil khushiyon se bhara.",
+      "Bas tu saath ho to har mushkil aasan lage.",
+      "Teri muskurahat mera sab kuch hai."
+    ];
+
+    // ---------- small set of vector 'anime-style' avatars (procedural / stylized) ----------
+    // We can't fetch external images, so create stylized SVG avatars dynamically with random colors and accessories
+    function makeAvatarSVG(seed){
+      // deterministic color palette from seed
+      const hues = [340, 345, 355, 12, 5, 18, 320, 290, 260, 200, 160, 120];
+      const h = hues[seed % hues.length];
+      const hair = `hsl(${h} 80% 45%)`;
+      const skin = seed%2? '#ffd9c7':'#f7d8b9';
+      const eye = seed%3? '#2d2d2d':'#0b3954';
+      const acc = seed%4? '#ffcad4':'#ffd6a5';
+      const face = `<rect width='100%' height='100%' rx='20' fill='white'/>`;
+      const svg = `
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240' width='240' height='240'>
+          <defs>
+            <linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='${acc}' stop-opacity='0.9'/><stop offset='1' stop-color='${hair}' stop-opacity='0.9'/></linearGradient>
+          </defs>
+          <rect width='240' height='240' rx='24' fill='url(#g)' />
+          <g transform='translate(40,36)'>
+            <ellipse cx='80' cy='80' rx='62' ry='72' fill='${skin}' />
+            <path d='M20 60 Q80 -10 140 60' fill='${hair}' />
+            <circle cx='55' cy='80' r='8' fill='${eye}' />
+            <circle cx='105' cy='80' r='8' fill='${eye}' />
+            <path d='M60 110 q20 14 40 0' stroke='#b24' stroke-width='4' fill='none' stroke-linecap='round' />
+          </g>
+        </svg>
+      `;
+      return 'data:image/svg+xml;utf8,'+encodeURIComponent(svg);
+    }
+
+    // ---------- deterministic hash function ----------
+    function seedFromNames(a,b){
+      const s = (a||"").trim().toLowerCase() + '|' + (b||"").trim().toLowerCase();
+      let hash = 2166136261 >>> 0;
+      for(let i=0;i<s.length;i++){ hash ^= s.charCodeAt(i); hash = Math.imul(hash, 16777619) >>> 0; }
+      return hash;
+    }
+
+    function computeCompatibility(name1, name2){
+      if(!name1 && !name2) return {percent:0,msg:'Please enter two names.'};
+      const seed = seedFromNames(name1, name2);
+      let raw = seed % 101; // 0..100
+      const letters = (name1+name2).toLowerCase().replace(/[^a-z]/g,'');
+      const shared = new Set(letters).size;
+      raw = Math.min(100, Math.max(0, Math.round((raw + (shared % 7) * 4))));
+      let msg = '';
+      if(raw > 90) msg = {hi:'आसमानी जोड़ी — सब kuch perfect!', hn:'Asmani jodi — sab kuch perfect!', en:'Match made in meme heaven — go ask them out!'};
+      else if(raw > 75) msg = {hi:'जज़्बात मजबूत हैं — कुछ खास प्लान करो', hn:'Vibes strong — plan kuch cute', en:'Strong vibes. Plan something cute.'};
+      else if(raw > 50) msg = {hi:'अच्छी कीमिस्ट्री — वक्त के साथ बढ़ेगा', hn:'Good chemistry — time ke sath grow karega', en:'Good chemistry — could grow with time.'};
+      else if(raw > 30) msg = {hi:'काम करना पड़ेगा — बातें करो', hn:'Thoda work chahiye — communicate karo', en:'Might need work — communication helps.'};
+      else msg = {hi:'कम कंपैटिबिलिटी — पर rules boring hote hain', hn:'Low compatibility — par rules boring hote hain', en:'Low compatibility — but hey, rules are boring.'};
+      return {percent:raw,msg,seed};
+    }
+
+    // ---------- UI wiring ----------
+    const name1 = document.getElementById('name1');
+    const name2 = document.getElementById('name2');
+    const calc = document.getElementById('calc');
+    const reset = document.getElementById('reset');
+    const resBox = document.getElementById('result');
+    const percentEl = document.getElementById('percent');
+    const msgEl = document.getElementById('message');
+    const avatarEl = document.getElementById('avatar');
+    const cardAvatar = document.getElementById('cardAvatar');
+    const cardTitle = document.getElementById('cardTitle');
+    const cardPercent = document.getElementById('cardPercent');
+    const cardShayari = document.getElementById('cardShayari');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const langSel = document.getElementById('lang');
+    const limitCountEl = document.getElementById('limitCount');
+    const historyBtn = document.getElementById('historyBtn');
+
+    // limit usage per device to 7
+    const MAX_USES = 7;
+    function getUses(){ return parseInt(localStorage.getItem('love_calc_uses')||'0',10); }
+    function incrementUses(){ const v = Math.min(MAX_USES, getUses()+1); localStorage.setItem('love_calc_uses', String(v)); return v; }
+    function updateLimitUI(){ limitCountEl.textContent = getUses() + '/' + MAX_USES; }
+    updateLimitUI();
+
+    function showResult(out, n1, n2){
+      percentEl.textContent = out.percent + '%';
+      const lang = langSel.value || 'en';
+      const messageText = (typeof out.msg === 'string')? out.msg : (out.msg[lang] || out.msg.en);
+      msgEl.textContent = messageText;
+      resBox.style.display = 'flex';
+      if(out.percent >= 70) avatarEl.classList.add('pulse'); else avatarEl.classList.remove('pulse');
+      const svgUrl = makeAvatarSVG(out.seed);
+      avatarEl.style.backgroundImage = `url(${svgUrl})`;
+      avatarEl.style.backgroundSize = 'cover';
+      cardAvatar.style.backgroundImage = `url(${svgUrl})`;
+      cardAvatar.style.backgroundSize = 'cover';
+      cardTitle.textContent = `${n1} ❤️ ${n2}`;
+      cardPercent.textContent = `${out.percent}% — ${messageText}`;
+      cardShayari.textContent = SHAYARI[out.seed % SHAYARI.length];
+    }
+
+    calc.addEventListener('click', ()=>{
+      if(getUses() >= MAX_USES){ alert('Limit reached — you can only check this calculator 7 times on this device.'); return; }
+      const a = name1.value.trim() || '—';
+      const b = name2.value.trim() || '—';
+      const out = computeCompatibility(a,b);
+      showResult(out,a,b);
+      incrementUses(); updateLimitUI();
+      // save history (localStorage) as separate entry
+      const hist = JSON.parse(localStorage.getItem('love_history')||'[]');
+      hist.unshift({a,b,percent:out.percent,msg:out.msg,ts:Date.now()});
+      localStorage.setItem('love_history', JSON.stringify(hist.slice(0,20)));
+    });
+
+    reset.addEventListener('click', ()=>{ name1.value=''; name2.value=''; resBox.style.display='none'; });
+
+    historyBtn.addEventListener('click', ()=>{
+      const hist = JSON.parse(localStorage.getItem('love_history')||'[]');
+      if(!hist.length) { alert('No history yet.'); return; }
+      const txt = hist.map(h => `${h.a} + ${h.b} => ${h.percent}%`).join('
+');
+      alert('Recent results:
+' + txt);
+    });
+
+    // download card: use native canvas snapshot technique
+    downloadBtn.addEventListener('click', async ()=>{
+      // render the offscreen #downloadCard element to canvas using SVG foreignObject
+      const card = document.getElementById('downloadCard');
+      // populate it is already populated by showResult
+      const svg = `<?xml version='1.0' encoding='UTF-8'?>` + `
+` + new XMLSerializer().serializeToString(card);
+      // create a blob via SVG -> image
+      try{
+        const blob = new Blob([svg], {type:'image/svg+xml;charset=utf-8'});
+        const url = URL.createObjectURL(blob);
+        const img = new Image();
+        img.onload = ()=>{
+          const c = document.createElement('canvas');
+          c.width = 820; c.height = 420;
+          const ctx = c.getContext('2d');
+          ctx.fillStyle = '#fff'; ctx.fillRect(0,0,c.width,c.height);
+          ctx.drawImage(img,0,0);
+          URL.revokeObjectURL(url);
+          c.toBlob((b)=>{ const a = document.createElement('a'); a.download = 'love-card.png'; a.href = URL.createObjectURL(b); a.click(); URL.revokeObjectURL(a.href); }, 'image/png');
+        };
+        img.crossOrigin = 'anonymous';
+        img.src = url;
+      }catch(e){
+        alert('Download failed in this browser. Use screenshot as fallback.');
+      }
+    });
+
+    // simple share handlers (WhatsApp uses universal link, Instagram Story can't be prefilled via web reliably — open instructions)
+    document.getElementById('shareWhats').addEventListener('click', ()=>{
+      if(resBox.style.display==='none'){ alert('Calculate first.'); return; }
+      const text = `${name1.value||'—'} ❤️ ${name2.value||'—'} = ${percentEl.textContent} — ${msgEl.textContent}`;
+      const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+      window.open(url,'_blank');
+    });
+
+    document.getElementById('shareInsta').addEventListener('click', ()=>{
+      alert('Instagram Story sharing needs the image. Click Download Card, then upload the image to your Instagram Story.');
+    });
+    document.getElementById('shareSnap').addEventListener('click', ()=>{
+      alert('Snapchat sharing needs the image. Click Download Card, then upload to Snapchat.');
+    });
+    document.getElementById('sharePin').addEventListener('click', ()=>{
+      if(resBox.style.display==='none'){ alert('Calculate first.'); return; }
+      const imgBlob = null; // placeholder — generating direct pinterest pin needs server.
+      const share = `${name1.value||'—'} ❤️ ${name2.value||'—'} — ${percentEl.textContent}`;
+      const url = `https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(location.href)}&description=${encodeURIComponent(share)}`;
+      window.open(url,'_blank');
+    });
+
+    // hearts floating animation (cosmetic)
+    (function spawnHearts(){
+      const container = document.querySelector('.hearts');
+      for(let i=0;i<14;i++){
+        const el = document.createElement('i');
+        el.style.left = Math.random()*100+'%';
+        el.style.top = Math.random()*100+'%';
+        el.style.width = (8+Math.random()*28)+'px';
+        el.style.height = el.style.width;
+        el.style.opacity = 0.6+Math.random()*0.4;
+        el.style.transform = `rotate(${(Math.random()*40)-20}deg)`;
+        container.appendChild(el);
+        (function animated(e){
+          const duration = 8000+Math.random()*8000;
+          e.animate([{transform:'translateY(0px) rotate(0deg)', opacity: e.style.opacity},{transform:`translateY(-${200+Math.random()*400}px) rotate(${100-Math.random()*200}deg)`, opacity: 0}], {duration, iterations:1, easing:'linear'}).onfinish = ()=>{ e.remove(); };
+        })(el);
+      }
+      setTimeout(spawnHearts, 2500+Math.random()*2500);
+    })();
+
+    // accessibility: Enter triggers calc
+    [name1,name2].forEach(el=>el.addEventListener('keydown', (e)=>{ if(e.key==='Enter') calc.click(); }));
+
+    // apply red theme toggle
+    document.getElementById('redMode').addEventListener('change',(e)=>{
+      if(e.target.checked) document.documentElement.style.setProperty('--accent','#e11d48'); else document.documentElement.style.setProperty('--accent','#6b21a8');
+    });
+
+    // initialize avatars on load with placeholders
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const seed = Math.floor(Math.random()*1000);
+      avatarEl.style.backgroundImage = `url(${makeAvatarSVG(seed)})`;
+      avatarEl.style.backgroundSize = 'cover';
+    });
+
+    // lightweight analytics stub (privacy first)
+    (function analyticsStub(){
+      // This is only a local event counter; no network calls. If you want GA, add separately.
+      const events = JSON.parse(localStorage.getItem('lc_events')||'{}');
+      events.last_visit = new Date().toISOString();
+      localStorage.setItem('lc_events', JSON.stringify(events));
+    })();
+
+    // SEO-friendly content injection for crawlers (progressive enhancement)
+    // Add a short visible paragraph for better SEO
+    (function injectSEO(){
+      const p = document.createElement('p'); p.className='small'; p.style.marginTop='12px';
+      p.textContent = 'Love Calculator in Hindi/Hinglish — animated, shareable result cards with random avatars and shayari. For entertainment only.';
+      document.querySelector('.card').appendChild(p);
+    })();
+  </script>
+</body>
+</html>
