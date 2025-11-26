@@ -1,86 +1,69 @@
 <!doctype html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Love Calculator ❤️ — XIZOAHUB</title>
-  <meta name="description" content="Fun Love Calculator in Hindi / Hinglish. Animated, shareable result cards with randomized anime-style characters and 100+ love shayari. For entertainment only." />
-  <meta name="keywords" content="love calculator, compatibility, shayari, Hindi, Hinglish, share, download, fun" />
+  <title>Love Calculator ❤️ — thepowerofyouths</title>
+  <meta name="description" content="Animated Love Calculator with Hindi/Hinglish support, random avatars and shayari, downloadable cards and share buttons." />
+  <meta name="keywords" content="love calculator,hindi,shayari,download card,share,compatibility" />
   <meta name="author" content="thepowerofyouths" />
-  <!-- Open Graph for social cards -->
-  <meta property="og:title" content="Love Calculator — Check your compatibility!">
-  <meta property="og:description" content="Animated, Hindi/Hinglish love calculator with shareable result cards, random anime-style avatars and love shayari.">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="thepowerofyouths">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebSite","name":"Love Calculator","url":"https://thepowerofyouths.example/","description":"Fun Love Calculator in Hindi/Hinglish."}
+  </script>
   <style>
-    :root{--bg:#fff6f7;--card:#fff;--accent:#e11d48;--muted:#8b5cf6;--text:#2b2b2b;--glass:rgba(255,255,255,0.6)}
-    *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    :root{--bg:#fff6f7;--card:#fff;--accent:#e11d48;--muted:#6b7280;--text:#2b2b2b}
+    *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
     html,body{height:100%;margin:0;background:linear-gradient(180deg,#fff0f2,#fff6f7);color:var(--text)}
-    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-    .card{width:100%;max-width:920px;background:linear-gradient(180deg,#fff,#fff8f9);border-radius:18px;padding:22px;box-shadow:0 12px 50px rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.06)}
-    header{display:flex;align-items:center;gap:14px}
-    h1{margin:0;font-size:1.6rem;color:var(--accent)}
-    .lead{margin:6px 0 14px;color:#6b7280}
+    .wrap{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:28px}
+    .card{width:100%;max-width:980px;background:linear-gradient(180deg,#fff,#fff8f9);border-radius:16px;padding:20px;box-shadow:0 12px 40px rgba(225,29,72,0.06);border:1px solid rgba(225,29,72,0.06)}
+    header{display:flex;gap:12px;align-items:center}
+    h1{margin:0;font-size:1.5rem;color:var(--accent)}
+    .lead{margin:6px 0 14px;color:var(--muted)}
+    nav{margin-left:auto;display:flex;gap:8px}
+    nav a{color:var(--accent);text-decoration:none;font-weight:600}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    label{display:block;font-size:.78rem;color:#6b7280;margin-bottom:6px}
+    label{display:block;font-size:.78rem;color:var(--muted);margin-bottom:6px}
     input[type="text"]{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);background:transparent;color:inherit;font-size:1rem}
-    .controls{display:flex;gap:10px;margin-top:12px}
+    .controls{display:flex;gap:8px;margin-top:12px}
     button.btn{padding:10px 14px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--accent),#ff7aa2);color:white;font-weight:700;cursor:pointer}
     button.secondary{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--accent);font-weight:700}
-    .result{margin-top:18px;padding:16px;border-radius:14px;background:linear-gradient(180deg,rgba(225,29,72,0.03), rgba(225,29,72,0.02));display:flex;align-items:center;gap:14px}
-    .avatar{width:110px;height:110px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:#fff;padding:10px;box-shadow:0 8px 30px rgba(0,0,0,0.06);overflow:hidden}
+    .result{margin-top:18px;padding:16px;border-radius:12px;background:linear-gradient(180deg,rgba(225,29,72,0.03), rgba(225,29,72,0.02));display:flex;align-items:center;gap:14px;transform:translateY(20px);opacity:0}
+    .result.show{transform:translateY(0);opacity:1;transition:all .6s cubic-bezier(.2,.9,.3,1)}
+    .avatar{width:110px;height:110px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#fff;padding:10px;box-shadow:0 8px 30px rgba(0,0,0,0.06);overflow:hidden}
     .meta{flex:1}
-    .percent{font-size:2.2rem;font-weight:900;margin:0;color:var(--accent)}
-    .msg{color:#6b7280;margin:6px 0 0}
-    .small{font-size:.78rem;color:#6b7280}
-    .actions{display:flex;gap:8px;margin-top:12px}
-    .lang-toggle{margin-left:auto}
-
-    /* animated background hearts */
-    .hearts{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
-    .hearts i{position:absolute;width:18px;height:18px;background:radial-gradient(circle at 35% 30%,#fff 0,#ff9aa8 30%,#ff6b81 60%);transform:rotate(-45deg);opacity:.7;border-radius:4px 4px 20px 20px}
-
-    /* pulse */
-    .pulse{animation:pulse 1.2s infinite}
-    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
-
-    /* responsive */
-    @media (max-width:800px){.grid{grid-template-columns:1fr} .avatar{width:86px;height:86px}} 
-
-    /* accessibility focus */
-    :focus{outline:3px solid rgba(225,29,72,0.12);outline-offset:2px}
-
-    /* result card for download */
-    #downloadCard{width:820px;height:420px;padding:28px;border-radius:18px;background:linear-gradient(180deg,#fff,#fff6f7);display:flex;gap:20px;align-items:center}
-    #downloadCard .avatar{width:240px;height:240px;border-radius:18px}
-    #downloadCard .meta{flex:1}
-    #downloadCard h2{margin:0;font-size:2.2rem;color:var(--accent)}
-    #downloadCard p{margin:8px 0 0;color:#6b7280}
-    /* hide from page visually */
-    .offscreen{position:fixed;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+    .percent{font-size:2.4rem;font-weight:900;margin:0;color:var(--accent)}
+    .msg{color:var(--muted);margin:6px 0 0}
+    .actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+    .small{font-size:.82rem;color:var(--muted)}
+    .hearts{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:1}
+    .confetti-canvas{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:2}
+    .section{margin-top:22px;border-top:1px dashed rgba(0,0,0,0.04);padding-top:18px}
+    footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+    .seo-tools{display:flex;gap:8px;align-items:center}
+    .badge{background:rgba(225,29,72,0.08);color:var(--accent);padding:6px 8px;border-radius:8px;font-weight:700}
+    @media (max-width:800px){.grid{grid-template-columns:1fr} .avatar{width:86px;height:86px}}
   </style>
 </head>
 <body>
   <div class="hearts" aria-hidden="true"></div>
+  <canvas id="confetti" class="confetti-canvas"></canvas>
+
   <div class="wrap">
     <div class="card" role="main">
       <header>
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M12 21s-7-4.35-9.5-7.5C-1 8.5 5 3.5 12 9c7-5.5 13  -0.5 9.5 4.5C19 16.65 12 21 12 21z" fill="#ff6b81"/></svg>
         <div>
           <h1>Love Calculator ❤️</h1>
-          <div class="lead">Hindi/Hinglish toggle ✓ &nbsp; Animated ✓ &nbsp; Shareable card ✓</div>
+          <div class="lead">Animated, Hindi/Hinglish support, shareable result cards. For entertainment only.</div>
         </div>
-        <div class="lang-toggle">
-          <label class="small">Language</label>
-          <select id="lang" aria-label="Language selector">
-            <option value="hi">Hindi</option>
-            <option value="hn">Hinglish</option>
-            <option value="en">English</option>
-          </select>
-        </div>
+        <nav aria-label="important pages">
+          <a href="#about">About</a>
+          <a href="#privacy">Privacy</a>
+          <a href="#terms">Terms</a>
+          <a href="#contact">Contact</a>
+        </nav>
       </header>
 
-      <div style="margin-top:12px" class="grid">
+      <div class="grid" style="margin-top:12px">
         <div>
           <label for="name1">Your name</label>
           <input id="name1" type="text" placeholder="e.g. Priyanshu" autocomplete="off" />
@@ -96,11 +79,15 @@
         <button id="reset" class="secondary">Reset</button>
         <button id="historyBtn" class="secondary">History</button>
         <div style="flex:1"></div>
-        <label class="small">Theme</label>
-        <input id="redMode" type="checkbox" title="Red love theme" aria-label="Red theme toggle" checked />
+        <label class="small">Language</label>
+        <select id="lang" aria-label="Language selector">
+          <option value="hi">Hindi</option>
+          <option value="hn">Hinglish</option>
+          <option value="en">English</option>
+        </select>
       </div>
 
-      <div id="result" class="result" style="display:none" aria-live="polite">
+      <div id="result" class="result" aria-live="polite">
         <div id="avatar" class="avatar" aria-hidden="true"></div>
         <div class="meta">
           <p id="percent" class="percent">0%</p>
@@ -108,37 +95,59 @@
           <div class="actions">
             <button id="downloadBtn" class="btn">Download Card</button>
             <button id="shareWhats" class="secondary">WhatsApp</button>
-            <button id="shareInsta" class="secondary">Instagram Story</button>
+            <button id="shareInsta" class="secondary">Instagram</button>
             <button id="shareSnap" class="secondary">Snapchat</button>
             <button id="sharePin" class="secondary">Pinterest</button>
           </div>
         </div>
       </div>
 
-      <div style="margin-top:12px" class="small">Limit: A device can run this calculator <strong id="limitCount">0</strong> times (max 7) — privacy-first; results stored locally only.</div>
+      <div style="margin-top:12px" class="small">Device checks: <strong id="limitCount">0</strong> / 7</div>
 
-      <footer style="margin-top:14px;display:flex;align-items:center;justify-content:space-between">
+      <div class="section" id="about">
+        <h3>About</h3>
+        <p class="small">This Love Calculator is for entertainment only. It generates a deterministic compatibility percentage, a random anime-style avatar (SVG) and a love shayari. No personal data is sent anywhere unless you share it.</p>
+      </div>
+
+      <div class="section" id="privacy">
+        <h3>Privacy</h3>
+        <p class="small">Results & history are stored locally in your browser (localStorage). You can clear history from your browser settings. We limit usage per device to 7 checks to reduce abuse.</p>
+      </div>
+
+      <div class="section" id="terms">
+        <h3>Terms</h3>
+        <p class="small">Use responsibly. This is a novelty tool and not a relationship assessment. By using this tool you accept these terms.</p>
+      </div>
+
+      <div class="section" id="contact">
+        <h3>Contact</h3>
+        <p class="small">Owner: thepowerofyouths — Contact via your website's contact form or email (add later).</p>
+      </div>
+
+      <footer>
         <div class="small">Made with ❤️ — for fun. No data leaves your device unless you share it.</div>
-        <div class="small">SEO-friendly • Share-ready</div>
+        <div class="seo-tools">
+          <button id="seoBtn" class="secondary">SEO Tools</button>
+          <div class="badge">Share-ready</div>
+        </div>
       </footer>
-
     </div>
   </div>
 
-  <!-- offscreen element used to compose download card -->
-  <div class="offscreen" aria-hidden="true">
-    <div id="downloadCard" role="img" aria-label="Result card">
-      <div id="cardAvatar" class="avatar"></div>
-      <div class="meta">
-        <h2 id="cardTitle">Priyanshu ❤️ Priya</h2>
-        <p id="cardPercent">85% — Match made in meme heaven</p>
-        <p id="cardShayari">Tere bin jee na payenge — bas yahi dua hamari.</p>
+  <!-- offscreen card used to create downloadable image -->
+  <div id="downloadCardWrapper" style="position:fixed;left:-9999px;top:-9999px;">
+    <div id="downloadCard" style="width:820px;height:420px;padding:28px;border-radius:18px;background:linear-gradient(180deg,#fff,#fff6f7);display:flex;gap:20px;align-items:center;font-family:Inter,Arial">
+      <div id="cardAvatar" style="width:240px;height:240px;border-radius:18px;background:#fff;box-shadow:0 8px 30px rgba(0,0,0,0.06);background-size:cover"></div>
+      <div style="flex:1">
+        <h2 id="cardTitle" style="margin:0;font-size:36px;color:#e11d48">Priyanshu ❤️ Priya</h2>
+        <p id="cardPercent" style="margin:8px 0 0;color:#6b7280;font-size:18px">85% — Match made in meme heaven</p>
+        <p id="cardShayari" style="margin:12px 0 0;color:#6b7280;font-size:16px">Tere bin jee na payenge — bas yahi dua hamari.</p>
       </div>
     </div>
   </div>
 
   <script>
-    // ---------- Content: 100+ love shayari (random pick) ----------
+    // ---------- Data ----------
     const SHAYARI = [
       "Tere naam se hi meri subah hai, tere naam se hi meri raat.",
       "Tum mile toh hua yeh ehsaas, zindagi me rang bhar gaye.",
@@ -175,20 +184,7 @@
       "Main aur tum, bas yehi kahani sadaa.",
       "Tere ishq ka rang meri rooh pe chhaya.",
       "Har pal tujhe paa lene ki tamanna.",
-      "Tumse hi meri zindagi saji hai.",
-      "Har dhadkan me tera naam likha.",
-      "Tere bina adhuri si hai meri duniya.",
-      "Tere aane se hi sab kuch badal gaya.",
-      "Tumhari ek nazar, meri poori duniya.",
-      "Tere husn ke aage shabnam phike pad jaye.",
-      "Teri ek muskan hi meri pehchan.",
-      "Har raat teri yaadon me beet jaati hai.",
-      "Teri aankhon me base armaan mere.",
-      "Mera har faisla tera saath chunta hai.",
-      "Tum ho to har lamha khas hai.",
-      "Pyar ka safar tumhare sang haseen.",
-      "Tere saath bitaye pal amar ho jaate hain.",
-      "Tujhse hi meri khushiyon ki chabi judi hai.",
+      "Tumse hi meri khushiyon ki chabi judi hai.",
       "Tere bina din adhoora lagta hai.",
       "Tere khwabon me hi main jeeta hoon.",
       "Tere saath ki adaa mujhko diwana bana deti hai.",
@@ -233,21 +229,18 @@
       "Teri muskurahat mera sab kuch hai."
     ];
 
-    // ---------- small set of vector 'anime-style' avatars (procedural / stylized) ----------
-    // We can't fetch external images, so create stylized SVG avatars dynamically with random colors and accessories
+    // ---------- Avatar generator ----------
     function makeAvatarSVG(seed){
-      // deterministic color palette from seed
       const hues = [340, 345, 355, 12, 5, 18, 320, 290, 260, 200, 160, 120];
       const h = hues[seed % hues.length];
       const hair = `hsl(${h} 80% 45%)`;
       const skin = seed%2? '#ffd9c7':'#f7d8b9';
       const eye = seed%3? '#2d2d2d':'#0b3954';
       const acc = seed%4? '#ffcad4':'#ffd6a5';
-      const face = `<rect width='100%' height='100%' rx='20' fill='white'/>`;
       const svg = `
         <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240' width='240' height='240'>
           <defs>
-            <linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='${acc}' stop-opacity='0.9'/><stop offset='1' stop-color='${hair}' stop-opacity='0.9'/></linearGradient>
+            <linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='${acc}' stop-opacity='0.95'/><stop offset='1' stop-color='${hair}' stop-opacity='0.95'/></linearGradient>
           </defs>
           <rect width='240' height='240' rx='24' fill='url(#g)' />
           <g transform='translate(40,36)'>
@@ -262,23 +255,21 @@
       return 'data:image/svg+xml;utf8,'+encodeURIComponent(svg);
     }
 
-    // ---------- deterministic hash function ----------
+    // ---------- Hash & compute ----------
     function seedFromNames(a,b){
       const s = (a||"").trim().toLowerCase() + '|' + (b||"").trim().toLowerCase();
       let hash = 2166136261 >>> 0;
       for(let i=0;i<s.length;i++){ hash ^= s.charCodeAt(i); hash = Math.imul(hash, 16777619) >>> 0; }
       return hash;
     }
-
     function computeCompatibility(name1, name2){
-      if(!name1 && !name2) return {percent:0,msg:'Please enter two names.'};
       const seed = seedFromNames(name1, name2);
-      let raw = seed % 101; // 0..100
+      let raw = seed % 101;
       const letters = (name1+name2).toLowerCase().replace(/[^a-z]/g,'');
       const shared = new Set(letters).size;
       raw = Math.min(100, Math.max(0, Math.round((raw + (shared % 7) * 4))));
       let msg = '';
-      if(raw > 90) msg = {hi:'आसमानी जोड़ी — सब kuch perfect!', hn:'Asmani jodi — sab kuch perfect!', en:'Match made in meme heaven — go ask them out!'};
+      if(raw > 90) msg = {hi:'आसमानी जोड़ी — सब कुछ perfect!', hn:'Asmani jodi — sab kuch perfect!', en:'Match made in meme heaven — go ask them out!'};
       else if(raw > 75) msg = {hi:'जज़्बात मजबूत हैं — कुछ खास प्लान करो', hn:'Vibes strong — plan kuch cute', en:'Strong vibes. Plan something cute.'};
       else if(raw > 50) msg = {hi:'अच्छी कीमिस्ट्री — वक्त के साथ बढ़ेगा', hn:'Good chemistry — time ke sath grow karega', en:'Good chemistry — could grow with time.'};
       else if(raw > 30) msg = {hi:'काम करना पड़ेगा — बातें करो', hn:'Thoda work chahiye — communicate karo', en:'Might need work — communication helps.'};
@@ -304,154 +295,128 @@
     const limitCountEl = document.getElementById('limitCount');
     const historyBtn = document.getElementById('historyBtn');
 
-    // limit usage per device to 7
     const MAX_USES = 7;
     function getUses(){ return parseInt(localStorage.getItem('love_calc_uses')||'0',10); }
     function incrementUses(){ const v = Math.min(MAX_USES, getUses()+1); localStorage.setItem('love_calc_uses', String(v)); return v; }
-    function updateLimitUI(){ limitCountEl.textContent = getUses() + '/' + MAX_USES; }
+    function updateLimitUI(){ limitCountEl.textContent = getUses(); }
     updateLimitUI();
 
-    function showResult(out, n1, n2){
-      percentEl.textContent = out.percent + '%';
+    function animateNumber(el, from, to, ms){
+      const start = performance.now();
+      const diff = to - from;
+      function frame(now){
+        const t = Math.min(1, (now-start)/ms);
+        const cur = Math.round(from + diff * easeOutCubic(t));
+        el.textContent = cur + '%';
+        if(t<1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+    function easeOutCubic(t){ return 1 - Math.pow(1-t,3); }
+
+    // simple confetti implementation
+    function burstConfetti(xCount=40){
+      const canvas = document.getElementById('confetti');
+      canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+      const ctx = canvas.getContext('2d');
+      const pieces = [];
+      for(let i=0;i<xCount;i++){
+        pieces.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height/2, vx:(Math.random()-0.5)*6, vy:Math.random()*6+2, size:4+Math.random()*8, color:`hsl(${Math.random()*360} 70% 60%)`, rot:Math.random()*360});
+      }
+      let t0 = performance.now();
+      function draw(now){
+        const dt = (now - t0)/1000; t0 = now;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for(let p of pieces){ p.x += p.vx; p.y += p.vy; p.vy += 0.12; p.rot += p.vx*2; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180); ctx.fillStyle = p.color; ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size); ctx.restore(); }
+        // remove those offscreen
+        for(let i=pieces.length-1;i>=0;i--){ if(pieces[i].y>canvas.height+50) pieces.splice(i,1); }
+        if(pieces.length>0) requestAnimationFrame(draw); else ctx.clearRect(0,0,canvas.width,canvas.height);
+      }
+      requestAnimationFrame(draw);
+    }
+
+    function showResult(out, a, b){
+      // percent animation
+      resBox.classList.add('show');
+      animateNumber(percentEl, 0, out.percent, 900);
       const lang = langSel.value || 'en';
       const messageText = (typeof out.msg === 'string')? out.msg : (out.msg[lang] || out.msg.en);
-      msgEl.textContent = messageText;
-      resBox.style.display = 'flex';
-      if(out.percent >= 70) avatarEl.classList.add('pulse'); else avatarEl.classList.remove('pulse');
+      // small delay for message
+      setTimeout(()=>{ msgEl.textContent = messageText; }, 350);
+      // avatar
       const svgUrl = makeAvatarSVG(out.seed);
       avatarEl.style.backgroundImage = `url(${svgUrl})`;
       avatarEl.style.backgroundSize = 'cover';
       cardAvatar.style.backgroundImage = `url(${svgUrl})`;
       cardAvatar.style.backgroundSize = 'cover';
-      cardTitle.textContent = `${n1} ❤️ ${n2}`;
+      cardTitle.textContent = `${a} ❤️ ${b}`;
       cardPercent.textContent = `${out.percent}% — ${messageText}`;
       cardShayari.textContent = SHAYARI[out.seed % SHAYARI.length];
+      // confetti for high matches
+      if(out.percent >= 70) burstConfetti(80);
+      else burstConfetti(30);
     }
 
     calc.addEventListener('click', ()=>{
-      if(getUses() >= MAX_USES){ alert('Limit reached — you can only check this calculator 7 times on this device.'); return; }
+      if(getUses() >= MAX_USES){ alert('Limit reached — you can only check 7 times on this device.'); return; }
       const a = name1.value.trim() || '—';
       const b = name2.value.trim() || '—';
       const out = computeCompatibility(a,b);
       showResult(out,a,b);
       incrementUses(); updateLimitUI();
-      // save history (localStorage) as separate entry
+      // save history
       const hist = JSON.parse(localStorage.getItem('love_history')||'[]');
       hist.unshift({a,b,percent:out.percent,msg:out.msg,ts:Date.now()});
       localStorage.setItem('love_history', JSON.stringify(hist.slice(0,20)));
     });
 
-    reset.addEventListener('click', ()=>{ name1.value=''; name2.value=''; resBox.style.display='none'; });
+    reset.addEventListener('click', ()=>{ name1.value=''; name2.value=''; resBox.classList.remove('show'); percentEl.textContent='0%'; msgEl.textContent='Enter names and hit Calculate.'; });
 
-    historyBtn.addEventListener('click', ()=>{
-      const hist = JSON.parse(localStorage.getItem('love_history')||'[]');
-      if(!hist.length) { alert('No history yet.'); return; }
-      const txt = hist.map(h => `${h.a} + ${h.b} => ${h.percent}%`).join('
-');
-      alert('Recent results:
-' + txt);
-    });
+    historyBtn.addEventListener('click', ()=>{ const hist = JSON.parse(localStorage.getItem('love_history')||'[]'); if(!hist.length){ alert('No history yet.'); return; } const txt = hist.map(h => `${h.a} + ${h.b} => ${h.percent}%`).join('
+'); alert('Recent results:
+' + txt); });
 
-    // download card: use native canvas snapshot technique
+    // download card logic using SVG foreignObject workaround
     downloadBtn.addEventListener('click', async ()=>{
-      // render the offscreen #downloadCard element to canvas using SVG foreignObject
       const card = document.getElementById('downloadCard');
-      // populate it is already populated by showResult
-      const svg = `<?xml version='1.0' encoding='UTF-8'?>` + `
-` + new XMLSerializer().serializeToString(card);
-      // create a blob via SVG -> image
-      try{
-        const blob = new Blob([svg], {type:'image/svg+xml;charset=utf-8'});
-        const url = URL.createObjectURL(blob);
-        const img = new Image();
-        img.onload = ()=>{
-          const c = document.createElement('canvas');
-          c.width = 820; c.height = 420;
-          const ctx = c.getContext('2d');
-          ctx.fillStyle = '#fff'; ctx.fillRect(0,0,c.width,c.height);
-          ctx.drawImage(img,0,0);
-          URL.revokeObjectURL(url);
-          c.toBlob((b)=>{ const a = document.createElement('a'); a.download = 'love-card.png'; a.href = URL.createObjectURL(b); a.click(); URL.revokeObjectURL(a.href); }, 'image/png');
-        };
-        img.crossOrigin = 'anonymous';
-        img.src = url;
-      }catch(e){
-        alert('Download failed in this browser. Use screenshot as fallback.');
-      }
+      // ensure images loaded
+      // create an SVG that embeds the HTML using foreignObject
+      const html = card.outerHTML;
+      const svg = `<?xml version='1.0' encoding='UTF-8'?><svg xmlns='http://www.w3.org/2000/svg' width='820' height='420'><foreignObject width='100%' height='100'>${html}</foreignObject></svg>`;
+      const blob = new Blob([svg], {type:'image/svg+xml;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const img = new Image();
+      img.onload = ()=>{
+        const canvas = document.createElement('canvas'); canvas.width=820; canvas.height=420; const ctx = canvas.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,820,420); ctx.drawImage(img,0,0); URL.revokeObjectURL(url); canvas.toBlob((b)=>{ const a = document.createElement('a'); a.download='love-card.png'; a.href = URL.createObjectURL(b); a.click(); URL.revokeObjectURL(a.href); }, 'image/png');
+      };
+      img.crossOrigin = 'anonymous'; img.src = url;
     });
 
-    // simple share handlers (WhatsApp uses universal link, Instagram Story can't be prefilled via web reliably — open instructions)
-    document.getElementById('shareWhats').addEventListener('click', ()=>{
-      if(resBox.style.display==='none'){ alert('Calculate first.'); return; }
-      const text = `${name1.value||'—'} ❤️ ${name2.value||'—'} = ${percentEl.textContent} — ${msgEl.textContent}`;
-      const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
-      window.open(url,'_blank');
+    // share handlers
+    document.getElementById('shareWhats').addEventListener('click', ()=>{ if(!resBox.classList.contains('show')){ alert('Calculate first.'); return; } const text = `${name1.value||'—'} ❤️ ${name2.value||'—'} = ${percentEl.textContent} — ${msgEl.textContent}`; window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`,'_blank'); });
+    document.getElementById('shareInsta').addEventListener('click', ()=>{ alert('Instagram requires image upload: click Download Card then upload to Instagram.'); });
+    document.getElementById('shareSnap').addEventListener('click', ()=>{ alert('Snapchat requires image upload: click Download Card then upload to Snapchat.'); });
+    document.getElementById('sharePin').addEventListener('click', ()=>{ if(!resBox.classList.contains('show')){ alert('Calculate first.'); return; } const share = `${name1.value||'—'} ❤️ ${name2.value||'—'} — ${percentEl.textContent}`; window.open(`https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(location.href)}&description=${encodeURIComponent(share)}`,'_blank'); });
+
+    // SEO tools modal (simple) — copy meta tags
+    document.getElementById('seoBtn').addEventListener('click', ()=>{
+      const meta = `<meta name=\"description\" content=\"Animated Love Calculator in Hindi/Hinglish. Shareable cards and random avatars.\">
+<meta name=\"keywords\" content=\"love calculator,shayari,hindi,share\">`;
+      prompt('Copy these meta tags for your page (Ctrl+C):', meta);
     });
 
-    document.getElementById('shareInsta').addEventListener('click', ()=>{
-      alert('Instagram Story sharing needs the image. Click Download Card, then upload the image to your Instagram Story.');
-    });
-    document.getElementById('shareSnap').addEventListener('click', ()=>{
-      alert('Snapchat sharing needs the image. Click Download Card, then upload to Snapchat.');
-    });
-    document.getElementById('sharePin').addEventListener('click', ()=>{
-      if(resBox.style.display==='none'){ alert('Calculate first.'); return; }
-      const imgBlob = null; // placeholder — generating direct pinterest pin needs server.
-      const share = `${name1.value||'—'} ❤️ ${name2.value||'—'} — ${percentEl.textContent}`;
-      const url = `https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(location.href)}&description=${encodeURIComponent(share)}`;
-      window.open(url,'_blank');
-    });
-
-    // hearts floating animation (cosmetic)
-    (function spawnHearts(){
-      const container = document.querySelector('.hearts');
-      for(let i=0;i<14;i++){
-        const el = document.createElement('i');
-        el.style.left = Math.random()*100+'%';
-        el.style.top = Math.random()*100+'%';
-        el.style.width = (8+Math.random()*28)+'px';
-        el.style.height = el.style.width;
-        el.style.opacity = 0.6+Math.random()*0.4;
-        el.style.transform = `rotate(${(Math.random()*40)-20}deg)`;
-        container.appendChild(el);
-        (function animated(e){
-          const duration = 8000+Math.random()*8000;
-          e.animate([{transform:'translateY(0px) rotate(0deg)', opacity: e.style.opacity},{transform:`translateY(-${200+Math.random()*400}px) rotate(${100-Math.random()*200}deg)`, opacity: 0}], {duration, iterations:1, easing:'linear'}).onfinish = ()=>{ e.remove(); };
-        })(el);
-      }
-      setTimeout(spawnHearts, 2500+Math.random()*2500);
-    })();
-
-    // accessibility: Enter triggers calc
-    [name1,name2].forEach(el=>el.addEventListener('keydown', (e)=>{ if(e.key==='Enter') calc.click(); }));
-
-    // apply red theme toggle
-    document.getElementById('redMode').addEventListener('change',(e)=>{
-      if(e.target.checked) document.documentElement.style.setProperty('--accent','#e11d48'); else document.documentElement.style.setProperty('--accent','#6b21a8');
-    });
-
-    // initialize avatars on load with placeholders
+    // small init
     document.addEventListener('DOMContentLoaded', ()=>{
       const seed = Math.floor(Math.random()*1000);
       avatarEl.style.backgroundImage = `url(${makeAvatarSVG(seed)})`;
-      avatarEl.style.backgroundSize = 'cover';
+      avatarEl.style.backgroundSize = 'cover'; updateLimitUI();
     });
 
-    // lightweight analytics stub (privacy first)
-    (function analyticsStub(){
-      // This is only a local event counter; no network calls. If you want GA, add separately.
-      const events = JSON.parse(localStorage.getItem('lc_events')||'{}');
-      events.last_visit = new Date().toISOString();
-      localStorage.setItem('lc_events', JSON.stringify(events));
-    })();
+    // Enter triggers
+    [name1,name2].forEach(el=>el.addEventListener('keydown',(e)=>{ if(e.key==='Enter') calc.click(); }));
 
-    // SEO-friendly content injection for crawlers (progressive enhancement)
-    // Add a short visible paragraph for better SEO
-    (function injectSEO(){
-      const p = document.createElement('p'); p.className='small'; p.style.marginTop='12px';
-      p.textContent = 'Love Calculator in Hindi/Hinglish — animated, shareable result cards with random avatars and shayari. For entertainment only.';
-      document.querySelector('.card').appendChild(p);
-    })();
+    // responsive canvas size
+    window.addEventListener('resize', ()=>{ const c = document.getElementById('confetti'); c.width = window.innerWidth; c.height = window.innerHeight; });
   </script>
 </body>
 </html>
